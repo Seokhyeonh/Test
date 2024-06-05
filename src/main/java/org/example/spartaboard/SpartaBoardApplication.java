@@ -9,5 +9,5 @@ public class SpartaBoardApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpartaBoardApplication.class, args);
 	}
-dd
+
 }
