@@ -1,5 +1,7 @@
 package org.example.spartaboard.auth;
 
+import jakarta.servlet.http.HttpServletResponse;
+import org.example.spartaboard.dto.LoginRequestDto;
 import org.example.spartaboard.dto.SignupRequestDto;
 import org.example.spartaboard.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -30,6 +32,17 @@ public class UserController {
     public String signup(SignupRequestDto requestDto) {
         userService.signup(requestDto);
 
-        return "redirect:/user/login-page";
+        return "redirect:/api/user/login-page";
+    }
+
+    @PostMapping("/user/login")
+    public String login(LoginRequestDto requestDto, HttpServletResponse res) {
+        try{
+            userService.login(requestDto, res);
+        }catch (Exception e){
+            return "redirect:/api/user/login-page?error";
+        }
+        return "redirect:/";
+
     }
 }
