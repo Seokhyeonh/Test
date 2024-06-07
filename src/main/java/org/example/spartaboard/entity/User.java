@@ -21,11 +21,11 @@ public class User extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank//가입시 필수
     @Column(nullable = false, unique = true)
     private String userId;
 
-    @NotBlank
+    @NotBlank//가입시 필수
     @Column(nullable = false)
     private String password;
 
@@ -51,12 +51,10 @@ public class User extends Timestamped {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime statusChangedAt;
 
-    public User(String userId, String password, String email, String username, UserStatus status, UserRoleEnum role) {
-        this.userId = userId;
+    public User(String username, String password, String email, UserStatus role) {
+        this.username = username;
         this.password = password;
         this.email = email;
-        this.username = username;
-        this.status = status;
         this.role = role;
     }
 
