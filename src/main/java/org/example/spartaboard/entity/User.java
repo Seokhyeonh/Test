@@ -5,35 +5,36 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.example.spartaboard.dto.ProfileModifyRequestDto;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Entity
+@Setter
 @NoArgsConstructor
-@Table(name="user")
-public class User extends Timestamped{
+@Entity
+@Table(name = "user")
+public class User extends Timestamped {
 
-    @Id //찾을 때 추천(고유)
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank//가입시 필수
+    @NotBlank
     @Column(nullable = false, unique = true)
     private String userId;
 
-    @NotBlank//가입시 필수
+    @NotBlank
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private String username;
-
     @NotBlank
-    @Email
     @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    private String username;
 
     @Column
     private String introduce;
@@ -42,13 +43,22 @@ public class User extends Timestamped{
     @Column(nullable = false)
     private UserStatus status;
 
-    //refresh token 설정 필요
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserStatus role;
 
-    //상태 변경 시간
-    //userEntity 에만 필요하므로 User 에 위치시킴
     @Column
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime StatusChangedAt;
+    private LocalDateTime statusChangedAt;
+
+    public User(String userId, String password, String email, String username, UserStatus status, UserRoleEnum role) {
+        this.userId = userId;
+        this.password = password;
+        this.email = email;
+        this.username = username;
+        this.status = status;
+        this.role = role;
+    }
 
     public void update(ProfileModifyRequestDto requestDto) {
         if (requestDto.getUsername() != null) {
@@ -60,8 +70,5 @@ public class User extends Timestamped{
         if (requestDto.getNewPassword() != null) {
             this.password = requestDto.getNewPassword();
         }
-
     }
-
-
 }
