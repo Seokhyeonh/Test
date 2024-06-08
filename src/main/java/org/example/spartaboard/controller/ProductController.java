@@ -5,7 +5,7 @@ import org.example.spartaboard.dto.ProductRequestDto;
 import org.example.spartaboard.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.spartaboard.entity.UserRoleEnum;
-import org.example.spartaboard.security.UserDetailsImpl;
+//import org.example.spartaboard.security.UserDetailsImpl;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,7 +24,7 @@ public class ProductController {
 
         return "redirect:/";
     }
-    @Secured(UserRoleEnum.Authority.ADMIN) // 관리자용
+/*    @Secured(UserRoleEnum.Authority.ADMIN) // 관리자용
     @GetMapping("/products/secured")
     public String getProductsByAdmin(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         System.out.println("userDetails.getUsername() = " + userDetails.getUsername());
@@ -33,7 +33,7 @@ public class ProductController {
         }
 
         return "redirect:/";
-    }
+    }*/
 
     @PostMapping("/validation")
     @ResponseBody

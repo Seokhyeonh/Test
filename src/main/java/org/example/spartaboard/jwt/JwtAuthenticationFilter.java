@@ -1,3 +1,4 @@
+/*
 package org.example.spartaboard.jwt;
 
 
@@ -62,3 +63,4 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setStatus(401);
     }
 }
+*/

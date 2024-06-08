@@ -1,3 +1,4 @@
+/*
 package org.example.spartaboard.security;
 
 
@@ -25,3 +26,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new UserDetailsImpl(user);
     }
 }
+*/

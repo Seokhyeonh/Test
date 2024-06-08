@@ -1,3 +1,4 @@
+/*
 package org.example.spartaboard.security;
 
 
@@ -64,3 +65,4 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 }
+*/

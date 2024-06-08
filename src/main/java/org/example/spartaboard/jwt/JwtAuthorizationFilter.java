@@ -1,5 +1,5 @@
+/*
 package org.example.spartaboard.jwt;
-
 
 
 import org.example.spartaboard.security.UserDetailsServiceImpl;
@@ -73,3 +73,4 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 }
+*/
