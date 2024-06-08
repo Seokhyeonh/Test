@@ -1,26 +1,40 @@
 package org.example.spartaboard.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.example.spartaboard.dto.ProfileModifyRequestDto;
+
+import java.time.LocalDateTime;
 
 @Getter
-@Entity
+@Setter
 @NoArgsConstructor
-@Table(name="user")
-public class User extends Timestamped{
+@Entity
+@Table(name = "user")
+public class User extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank//가입시 필수
     @Column(nullable = false, unique = true)
     private String userId;
+
+    @NotBlank//가입시 필수
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
-    private String username;
+
+    @NotBlank
     @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    private String username;
     @Column
     private String introduce;
 
@@ -28,6 +42,30 @@ public class User extends Timestamped{
     @Column(nullable = false)
     private UserStatus status;
 
-    //refresh token 설정 필요
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserStatus role;
 
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime statusChangedAt;
+
+    public User(String username, String password, String email, UserStatus role) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+    }
+
+    public void update(ProfileModifyRequestDto requestDto) {
+        if (requestDto.getUsername() != null) {
+            this.username = requestDto.getUsername();
+        }
+        if (requestDto.getIntroduce() != null) {
+            this.introduce = requestDto.getIntroduce();
+        }
+        if (requestDto.getNewPassword() != null) {
+            this.password = requestDto.getNewPassword();
+        }
+    }
 }

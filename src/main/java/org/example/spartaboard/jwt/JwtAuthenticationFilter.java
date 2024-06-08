@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.example.spartaboard.Security.UserDetailsImpl;
 import org.example.spartaboard.dto.LoginRequestDto;
-import org.example.spartaboard.entity.UserRoleEnum;
+import org.example.spartaboard.entity.UserStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -45,9 +45,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) {
         String username = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
-        UserRoleEnum role = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getRole();
+        UserStatus status = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getStatus();
 
-        String token = jwtUtil.createToken(username, role);
+        String token = jwtUtil.createToken(username, status);
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
     }
 
