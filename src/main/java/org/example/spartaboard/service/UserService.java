@@ -5,6 +5,7 @@ import org.example.spartaboard.dto.LoginRequestDto;
 import org.example.spartaboard.dto.SignupRequestDto;
 import org.example.spartaboard.entity.User;
 import org.example.spartaboard.entity.UserRoleEnum;
+import org.example.spartaboard.entity.UserStatus;
 import org.example.spartaboard.jwt.JwtUtil;
 import org.example.spartaboard.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -66,8 +67,10 @@ public class UserService {
             role = UserRoleEnum.ADMIN;
         }
 
+        UserStatus userStatus = UserStatus.ACTIVE;
+
         // 사용자 등록
-        User user = new User(userid, username, password, email, intro, role);
+        User user = new User(userid, username, password, email, intro, role, userStatus);
         userRepository.save(user);
     }
 
