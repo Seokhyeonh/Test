@@ -4,7 +4,7 @@ package org.example.spartaboard.service;
 import org.example.spartaboard.dto.LoginRequestDto;
 import org.example.spartaboard.dto.SignupRequestDto;
 import org.example.spartaboard.entity.User;
-import org.example.spartaboard.entity.UserStatus;
+import org.example.spartaboard.entity.UserRoleEnum;
 import org.example.spartaboard.jwt.JwtUtil;
 import org.example.spartaboard.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -58,12 +58,12 @@ public class UserService {
         }
 
         // 사용자 ROLE 확인
-        UserStatus role = UserStatus.USER;
+        UserRoleEnum role = UserRoleEnum.USER;
         if (requestDto.isAdmin()) {
             if (!ADMIN_TOKEN.equals(requestDto.getAdminToken())) {
                 throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
             }
-            role = UserStatus.ADMIN;
+            role = UserRoleEnum.ADMIN;
         }
 
         // 사용자 등록

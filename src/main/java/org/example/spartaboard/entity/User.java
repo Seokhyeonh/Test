@@ -27,10 +27,10 @@ public class User extends Timestamped {
     private String intro;
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private UserStatus role;
+    private UserRoleEnum role;
 
 
-    public User(String userid, String username, String password, String email, String intro, UserStatus role) {
+    public User(String userid, String username, String password, String email, String intro, UserRoleEnum role) {
         this.userid = userid;
         this.username = username;
         this.password = password;

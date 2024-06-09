@@ -1,7 +1,7 @@
 package org.example.spartaboard.jwt;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.example.spartaboard.entity.UserStatus;
+import org.example.spartaboard.entity.UserRoleEnum;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -42,7 +42,7 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(bytes);
     }
     // 토큰 생성
-    public String createToken(String userid, UserStatus role) {
+    public String createToken(String userid, UserRoleEnum role) {
         Date date = new Date();
         return BEARER_PREFIX +
                 Jwts.builder()
