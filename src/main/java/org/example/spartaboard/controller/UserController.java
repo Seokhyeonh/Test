@@ -1,5 +1,6 @@
 package org.example.spartaboard.controller;
 
+import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.spartaboard.dto.LoginRequestDto;
 import org.example.spartaboard.dto.SignupRequestDto;
@@ -20,10 +21,10 @@ public class UserController {
 
 
     @PostMapping("/user/signup")
-    public String signup(@RequestBody SignupRequestDto requestDto) {
+    public String signup(@RequestBody @Valid SignupRequestDto requestDto) {
         userService.signup(requestDto);
 
-        return "redirect:/api/user/login-page";
+        return "회원가입 완료";
     }
 
     @PostMapping("/user/login")

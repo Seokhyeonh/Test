@@ -14,44 +14,67 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserService {  // 애플리케이션의 비즈니스 로직을 처리하는 서비스 클래스
-    private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
-    private final PasswordEncoder passwordEncoder;
+public class UserService {
 
-    @Autowired
-    public UserService(UserRepository userRepository, JwtUtil jwtUtil, PasswordEncoder passwordEncoder) {
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
-        this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     // ADMIN_TOKEN
+    private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+
     public void signup(SignupRequestDto requestDto) {
+        String userid = requestDto.getUserid();
         String username = requestDto.getUsername();
-        String password = passwordEncoder.encode(requestDto.getPassword()); // 비밀번호 암호화
-//        String email = requestDto.getEmail();  // SignupRequestDto 확인 후 적용
+        String intro = requestDto.getIntro();
+        String passwordBefore = requestDto.getPassword();
+        if(passwordBefore.length()<10){
+            throw new IllegalArgumentException("비밀번호는 최소 10글자 이상이어야 합니다.");
+        }
+        String password = passwordEncoder.encode(requestDto.getPassword());
+
+
+        //회원 사용자 ID 조건 확인
+        if (!(userid.length() >= 10 && userid.length() <= 20)) {
+            throw new IllegalArgumentException("사용자 ID는 최소 10글자 이상, 최대 20글자 이하여야 합니다.");
+        }
         // 회원 중복 확인
-        Optional<User> checkUsername = userRepository.findByUsername(username);
-        if (checkUsername.isPresent()) {
+        Optional<User> checkUserid = userRepository.findByUserId(userid);
+        if (checkUserid.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
+
         // email 중복확인
         String email = requestDto.getEmail();
         Optional<User> checkEmail = userRepository.findByEmail(email);
         if (checkEmail.isPresent()) {
             throw new IllegalArgumentException("중복된 Email 입니다.");
         }
+
         // 사용자 ROLE 확인
         UserStatus role = UserStatus.USER;
+        if (requestDto.isAdmin()) {
+            if (!ADMIN_TOKEN.equals(requestDto.getAdminToken())) {
+                throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
+            }
+            role = UserStatus.ADMIN;
+        }
 
-        User user = new User(username, password, email, role);
+        UserStatus userStatus = UserStatus.ACTIVE;
+
+        // 사용자 등록
+        User user = new User(userid, username, password, email, intro, role, userStatus);
         userRepository.save(user);
     }
 
-    // 로그인 로직
     public void login(LoginRequestDto requestDto, HttpServletResponse res) {
-        String username = requestDto.getUsername();
+        String username = requestDto.getUserId();
         String password = requestDto.getPassword();
 
         // 사용자 확인
@@ -64,35 +87,13 @@ public class UserService {  // 애플리케이션의 비즈니스 로직을 처�
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        // Access Token 및 Refresh Token 생성
-        String accessToken = jwtUtil.createAccessToken(user.getUsername(), user.getRole());
-        String refreshToken = jwtUtil.createRefreshToken(user.getUsername());
-
-        // Refresh Token을 사용자 엔티티에 저장
-        user.setRefreshToken(refreshToken);
-        userRepository.save(user);
-
-        // JWT를 쿠키에 저장 후 Response 객체에 추가
-        jwtUtil.addJwtToCookie(accessToken, refreshToken, res);
+        // JWT 생성 및 쿠키에 저장 후 Response 객체에 추가
+        String token = jwtUtil.createToken(user.getUsername(), user.getRole());
+        jwtUtil.addJwtToCookie(token, res);
     }
 
-    // Refresh Token을 이용한 Access Token 재발급
-    public String refresh(String refreshToken) {
-        if (jwtUtil.validateToken(refreshToken)) {
-            String username = jwtUtil.getUserInfoFromToken(refreshToken).getSubject();
-            User user = userRepository.findByUsername(username).orElseThrow(
-                    () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
-            );
-
-            // Refresh Token 일치 확인
-            if (!refreshToken.equals(user.getRefreshToken())) {
-                throw new IllegalArgumentException("유효하지 않은 Refresh Token입니다.");
-            }
-
-            // 새로운 Access Token 생성
-            return jwtUtil.createAccessToken(username, user.getRole());
-        } else {
-            throw new IllegalArgumentException("유효하지 않은 Refresh Token입니다.");
-        }
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
     }
 }
