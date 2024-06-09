@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 
-@Slf4j(topic = "로그인 및 JWT 생성")
+@Slf4j(topic = "로그인 및 JWT 생성") // Spring Security의 인증 흐름에 따라 로그인 요청을 처리하는 필터
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final JwtUtil jwtUtil;
 
