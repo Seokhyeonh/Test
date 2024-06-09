@@ -67,9 +67,25 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
-        http.formLogin((formLogin) -> //FormLogin 즉, 직접 만든 로그인페이지를 사용할 거라서 login page 설정하는 것
+        http.formLogin(formLogin -> //FormLogin 즉, 직접 만든 로그인페이지를 사용할 거라서 login page 설정하는 것
                 formLogin
+                        // 로그인 View 제공 (GET /api/users/login-page)
                         .loginPage("/api/users/login-page").permitAll()
+                        // 로그인 처리 (POST /api/users/login)
+                        .loginProcessingUrl("/api/users/login")
+                        // 로그인 처리 후 성공 시 URL
+                        .defaultSuccessUrl("/")
+                        // 로그인 처리 후 실패 시 URL
+                        .failureUrl("/api/users/login-page?error").permitAll()
+        );
+
+        http.logout(logout ->
+                logout
+                        .logoutUrl("/api/users/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("Authorization", "RefreshToken")
+                        .permitAll()
         );
 
         // 필터 관리
