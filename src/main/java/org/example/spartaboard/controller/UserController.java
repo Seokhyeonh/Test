@@ -1,6 +1,7 @@
 package org.example.spartaboard.controller;
 
 
+import jakarta.validation.Valid;
 import org.example.spartaboard.dto.SignupRequestDto;
 import org.example.spartaboard.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class UserController {
 
 
     @PostMapping("/user/signup")
-    public String signup(@RequestBody SignupRequestDto requestDto) {
+    public String signup(@RequestBody @Valid SignupRequestDto requestDto) {
         userService.signup(requestDto);
 
         return "회원가입 완료";
