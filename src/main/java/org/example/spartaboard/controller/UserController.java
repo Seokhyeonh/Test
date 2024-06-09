@@ -20,7 +20,9 @@ public class UserController {
 
 
     @PostMapping("/user/signup")
-    public void signup(@RequestBody SignupRequestDto requestDto) {
+    public String signup(@RequestBody SignupRequestDto requestDto) {
         userService.signup(requestDto);
+
+        return "회원가입 완료";
     }
 }

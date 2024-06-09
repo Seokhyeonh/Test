@@ -1,10 +1,10 @@
 package org.example.spartaboard.entity;
 
-public enum UserRoleEnum {
+public enum UserStatus {
     USER(Authority.USER), // 사용자 권한
     ADMIN(Authority.ADMIN); // 관리자 권한
     private final String authority;
-    UserRoleEnum(String authority) {
+    UserStatus(String authority) {
         this.authority = authority;
     }
     public String getAuthority() {

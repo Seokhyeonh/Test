@@ -1,6 +1,7 @@
 package org.example.spartaboard.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,26 +9,35 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
-public class User {
+public class User extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false, length = 20)
+    private String userid;
+    @Column(nullable = false)
     private String username;
     @Column(nullable = false)
     private String password;
     @Column(nullable = false, unique = true)
     private String email;
+    @Column
+    private String intro;
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private UserRoleEnum role;
+    private UserStatus role;
 
-    public User(String username, String password, String email, UserRoleEnum role) {
+
+    public User(String userid, String username, String password, String email, String intro,UserStatus role) {
+        this.userid = userid;
         this.username = username;
         this.password = password;
         this.email = email;
+        this.intro = intro;
         this.role = role;
 
     }
+
 }
