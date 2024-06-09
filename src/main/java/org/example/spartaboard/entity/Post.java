@@ -32,6 +32,7 @@ public class Post extends Timestamped {
         this.contents = contents;
         this.user = user;
     }
+
     public void update(String title, String contents) {
         if (title != null && !title.isBlank()) {
             this.title = title;

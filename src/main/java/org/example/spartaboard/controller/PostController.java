@@ -25,6 +25,7 @@ public class PostController {
 
     private final PostService postService;
 
+    //게시글 수정
     @PutMapping("{postId}")
     public ResponseEntity<PostResponseDto> updatePost(
             @PathVariable Long postId,
@@ -38,6 +39,7 @@ public class PostController {
         return new ResponseEntity<>(PostResponseDto, HttpStatus.OK);
     }
 
+    //게시글 삭제
     @DeleteMapping("/{postId}")
     public ResponseEntity<String> deletePost(
             @PathVariable Long postId,
