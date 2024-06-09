@@ -51,6 +51,9 @@ public class User extends Timestamped {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime statusChangedAt;
 
+    // Refresh Token을 저장할 필드
+    private String refreshToken;
+
     public User(String username, String password, String email, UserStatus role) {
         this.username = username;
         this.password = password;
