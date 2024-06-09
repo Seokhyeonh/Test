@@ -30,7 +30,7 @@ public class User extends Timestamped {
     private UserStatus role;
 
 
-    public User(String userid, String username, String password, String email, String intro,UserStatus role) {
+    public User(String userid, String username, String password, String email, String intro, UserStatus role) {
         this.userid = userid;
         this.username = username;
         this.password = password;

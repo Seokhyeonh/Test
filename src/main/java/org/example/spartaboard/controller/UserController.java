@@ -1,13 +1,11 @@
 package org.example.spartaboard.controller;
 
 
-import jakarta.validation.Valid;
 import org.example.spartaboard.dto.SignupRequestDto;
 import org.example.spartaboard.service.UserService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 public class UserController {
 
@@ -18,11 +16,11 @@ public class UserController {
     }
 
 
-
     @PostMapping("/user/signup")
     public String signup(@RequestBody SignupRequestDto requestDto) {
         userService.signup(requestDto);
 
         return "회원가입 완료";
     }
+
 }
