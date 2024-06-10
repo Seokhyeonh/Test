@@ -12,7 +12,7 @@ public class PostResponseDto {
         this.postId = post.getPostId();
         this.title = post.getTitle();
         this.contents = post.getContents();
-        this.userId = post.getUser().getUserId();
+        this.userId = post.getUser().getUserid();
 
     }
 

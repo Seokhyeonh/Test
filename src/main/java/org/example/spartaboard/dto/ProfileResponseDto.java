@@ -8,13 +8,13 @@ import org.example.spartaboard.entity.User;
 @Getter
 public class ProfileResponseDto {
 
-    private String userId;
+    private String userid;
     private String username;
     private String introduce;
     private String email;
 
     public ProfileResponseDto(User user) {
-        this.userId = user.getUserId();
+        this.userid = user.getUserid();
         this.username = user.getUsername();
         this.introduce = user.getIntroduce();
         this.email = user.getEmail();
