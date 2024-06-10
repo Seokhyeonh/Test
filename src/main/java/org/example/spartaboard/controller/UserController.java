@@ -1,11 +1,16 @@
 package org.example.spartaboard.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.spartaboard.Security.UserDetailsImpl;
 import org.example.spartaboard.dto.LoginRequestDto;
 import org.example.spartaboard.dto.SignupRequestDto;
 import org.example.spartaboard.jwt.JwtUtil;
 import org.example.spartaboard.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,6 +41,26 @@ public class UserController {
             return "redirect:/api/user/login-page?error";
         }
         return "로그인 완료";
+    }
+
+    @PostMapping("/user/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        // 현재 사용자의 세션 무효화
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        // 쿠키 삭제
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+            }
+        }
+
+        return ResponseEntity.ok("로그아웃 완료");
     }
 
     @PostMapping("/user/refresh")

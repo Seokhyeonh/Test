@@ -1,5 +1,6 @@
 package org.example.spartaboard.service;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.spartaboard.dto.LoginRequestDto;
 import org.example.spartaboard.dto.SignupRequestDto;
@@ -8,6 +9,7 @@ import org.example.spartaboard.entity.UserStatus;
 import org.example.spartaboard.jwt.JwtUtil;
 import org.example.spartaboard.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -74,7 +76,7 @@ public class UserService {
     }
 
     public void login(LoginRequestDto requestDto, HttpServletResponse res) {
-        String username = requestDto.getUserId();
+        String username = requestDto.getUserid();
         String password = requestDto.getPassword();
 
         // 사용자 확인
