@@ -3,6 +3,8 @@ package org.example.spartaboard.controller;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.example.spartaboard.Security.UserDetailsImpl;
+import org.example.spartaboard.dto.CreatePostRequestDto;
+import org.example.spartaboard.dto.CreatePostResponseDto;
 import org.example.spartaboard.dto.PostResponseDto;
 import org.example.spartaboard.dto.PostUpdateRequestDto;
 import org.example.spartaboard.entity.Post;
@@ -24,6 +26,24 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+
+    @PostMapping("/createPost")
+    public CreatePostResponseDto createPost(CreatePostRequestDto createPostRequestDto) {
+
+        return postService.createPost(createPostRequestDto);
+
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        return "test";
+    }
+
+    @GetMapping("/readPost")
+    public List<CreatePostResponseDto> getAllPosts() {
+
+        return postService.getAllPosts();
+    }
 
     //게시글 수정
     @PutMapping("{postId}")

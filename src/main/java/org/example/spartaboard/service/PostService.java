@@ -1,6 +1,8 @@
 package org.example.spartaboard.service;
 
 import jakarta.transaction.Transactional;
+import org.example.spartaboard.dto.CreatePostRequestDto;
+import org.example.spartaboard.dto.CreatePostResponseDto;
 import org.example.spartaboard.dto.PostResponseDto;
 import org.example.spartaboard.dto.PostUpdateRequestDto;
 import org.example.spartaboard.entity.Post;
@@ -9,12 +11,29 @@ import org.example.spartaboard.exception.DataNotFoundException;
 import org.example.spartaboard.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 
 @Service
 public class PostService {
 
     private PostRepository postRepository;
+
+    //게시글 생성
+    @Transactional
+    public CreatePostResponseDto createPost(CreatePostRequestDto createPostRequestDto) {
+        String content = createPostRequestDto.getContent();
+        User userid = createPostRequestDto.getUserid();
+        String title = createPostRequestDto.getTitle();
+        Post post = new Post(title, content, userid); //
+        postRepository.save(post);
+        return new CreatePostResponseDto(post);
+    }
+
+    //게시글 조회
+    public List<CreatePostResponseDto> getAllPosts() {
+        return postRepository.findAll().stream().map(CreatePostResponseDto::new).toList();
+    }
 
     //게시글 수정
     @Transactional

@@ -78,7 +78,7 @@ public class UserService {
             role = UserStatus.ADMIN;
         }
 
-        UserStatus userStatus = UserStatus.ACTIVE;
+       userStatus = UserStatus.ACTIVE;
 
         // 사용자 등록
         User user = new User(userid, username, password, email, intro, role, userStatus);
@@ -96,7 +96,7 @@ public class UserService {
     }
 
     public void login(LoginRequestDto requestDto, HttpServletResponse res) {
-        String username = requestDto.getUserId();
+        String username = requestDto.getUserid();
         String password = requestDto.getPassword();
 
         // 사용자 확인
