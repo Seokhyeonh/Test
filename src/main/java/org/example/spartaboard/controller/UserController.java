@@ -56,13 +56,13 @@ public class UserController {
 
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/user")
     public String userDelete(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
-        user.getUserId();
         userService.deleteById(user.getId());
 
         //service에서 할일 1.findbyid로 user객체 갖고오기 2.유저 객체 수정 3.db반영
+        //jwt토큰을 헤더에 넣어서 테스트
 
         return "회원탈퇴 완료";
     }

@@ -2,6 +2,7 @@ package org.example.spartaboard.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import org.example.spartaboard.dto.LoginRequestDto;
 import org.example.spartaboard.dto.SignupRequestDto;
 import org.example.spartaboard.entity.User;
@@ -74,11 +75,11 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     public void deleteById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
                 EntityNotFoundException::new
         );
-
 
         user.isInactive();
         userRepository.save(user);
