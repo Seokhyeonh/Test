@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -31,6 +34,11 @@ public class User extends Timestamped {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserStatus userStatus;
+    //상태 변경 시간
+    //userEntity 에만 필요하므로 User 에 위치시킴
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime StatusChangedAt;
 
 
     public User(String userid, String username, String password, String email, String intro, UserRoleEnum role, UserStatus userStatus) {
