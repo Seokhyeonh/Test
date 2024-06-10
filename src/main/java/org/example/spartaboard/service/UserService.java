@@ -40,6 +40,8 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호는 최소 10글자 이상이어야 합니다.");
         }
         String password = passwordEncoder.encode(requestDto.getPassword());
+        UserStatus userStatus = UserStatus.ACTIVE;
+
 
         //회원 사용자 ID 조건 확인
         if (!(userid.length() >= 10 && userid.length() <= 20)) {
@@ -50,6 +52,12 @@ public class UserService {
         Optional<User> checkUserid = userRepository.findByUserId(userid);
         if (checkUserid.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
+        }
+
+        //회원 상태 확인
+        Optional<User> checkUserStatus = userRepository.findByStatus(UserStatus.INACTIVE);
+        if (checkUserStatus.isPresent()) {
+            throw new IllegalArgumentException("탈퇴 상태인 사용자가 존재합니다.");
         }
 
         // email 중복확인
@@ -67,8 +75,6 @@ public class UserService {
             }
             role = UserStatus.ADMIN;
         }
-
-        UserStatus userStatus = UserStatus.ACTIVE;
 
         // 사용자 등록
         User user = new User(userid, username, password, email, intro, role, userStatus);
