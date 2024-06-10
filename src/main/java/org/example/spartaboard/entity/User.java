@@ -80,4 +80,8 @@ public class User extends Timestamped {
             this.password = requestDto.getNewPassword();
         }
     }
+
+    public void isInactive(){
+        this.status=UserStatus.INACTIVE;
+    }
 }

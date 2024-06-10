@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing
 @SpringBootApplication
-		(exclude =  SecurityAutoConfiguration.class )//시큐리티 제외
+		//(exclude =  SecurityAutoConfiguration.class )//시큐리티 제외
 public class SpartaBoardApplication {
 
 	public static void main(String[] args) {

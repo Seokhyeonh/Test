@@ -1,11 +1,16 @@
 package org.example.spartaboard.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.spartaboard.Security.UserDetailsImpl;
 import org.example.spartaboard.dto.LoginRequestDto;
 import org.example.spartaboard.dto.SignupRequestDto;
+import org.example.spartaboard.entity.User;
 import org.example.spartaboard.jwt.JwtUtil;
 import org.example.spartaboard.service.UserService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -49,5 +54,16 @@ public class UserController {
             throw new IllegalArgumentException("유효하지 않은 리프레시 토큰입니다.");
         }
 
+    }
+
+    @DeleteMapping()
+    public String userDelete(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        user.getUserId();
+        userService.deleteById(user.getId());
+
+        //service에서 할일 1.findbyid로 user객체 갖고오기 2.유저 객체 수정 3.db반영
+
+        return "회원탈퇴 완료";
     }
 }

@@ -1,5 +1,6 @@
 package org.example.spartaboard.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.spartaboard.dto.LoginRequestDto;
 import org.example.spartaboard.dto.SignupRequestDto;
@@ -70,6 +71,16 @@ public class UserService {
 
         // 사용자 등록
         User user = new User(userid, username, password, email, intro, role, userStatus);
+        userRepository.save(user);
+    }
+
+    public void deleteById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(
+                EntityNotFoundException::new
+        );
+
+
+        user.isInactive();
         userRepository.save(user);
     }
 
