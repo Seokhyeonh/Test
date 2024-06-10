@@ -12,19 +12,19 @@ import org.example.spartaboard.entity.Comment;
 public class CommentResponseDto  {
     private Long commentId;
     private String contents;
-    private Long userId;
+    private Long userid;
 
 
     public CommentResponseDto(Long commentId, String contents, Long userId) {
         this.commentId = commentId;
         this.contents = contents;
-        this.userId = userId;
+        this.userid = userid;
     }
 
 
     public CommentResponseDto(Comment comment) {
         this.commentId = comment.getCommentId();
         this.contents = comment.getContents();
-        this.userId=getUserId();
+        this.userid=getUserid();
     }
 }

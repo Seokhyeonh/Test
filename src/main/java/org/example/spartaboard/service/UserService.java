@@ -96,7 +96,7 @@ public class UserService {
     }
 
     public void login(LoginRequestDto requestDto, HttpServletResponse res) {
-        String username = requestDto.getUserid();
+        String username = requestDto.getUserId();
         String password = requestDto.getPassword();
 
         // 사용자 확인

@@ -11,7 +11,7 @@ public class ProfileRequestDto {
 
     @Pattern(regexp = "^[a-zA-Z0-9]{10,20}$")
     @NotBlank(message = "ID를 입력해주세요.")
-    private String userId;
+    private String userid;
 
 //    @Min(10)
 //    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{10,}$")

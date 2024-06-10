@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByStatus(UserStatus status);
 
     //profile
-    boolean existsUserByUserIdAndStatus(String requestUserId, UserStatus userStatus);
-    Optional<User>findByUserId(String UserId);
+    boolean existsUserByUseridAndStatus(String requestUserid, UserStatus userStatus);
+    Optional<User>findByUserid(String UserId);
 
 }
