@@ -54,8 +54,16 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
+
+//    /**
+//     * 계정 비활성화.
+//     *
+//     * @return 사용 여부
+//     * @apiNote 사용할 경우 true를 리턴하도록 재정의.
+//     */
     @Override
     public boolean isEnabled() {
-        return false;
-    }
+        return true;
+    } // 이 계정을 사용 할 것이냐
+    // false 회원가입을 해도 안먹힘
 }

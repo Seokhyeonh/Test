@@ -30,14 +30,12 @@ public class UserController {
 
     @PostMapping("/user/login")
     public String login(LoginRequestDto requestDto, HttpServletResponse res) {
-        userService.login(requestDto, res);
-
         try {
             userService.login(requestDto, res);
         } catch (Exception e) {
-            return "reirect:/api/user/login-page?error";
+            return "redirect:/api/user/login-page?error";
         }
-        return "reirect:/";
+        return "로그인 완료";
     }
 
     @PostMapping("/user/refresh")
@@ -48,6 +46,5 @@ public class UserController {
         } else {
             throw new IllegalArgumentException("유효하지 않은 리프레시 토큰입니다.");
         }
-
     }
 }
