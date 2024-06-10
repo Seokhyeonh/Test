@@ -1,14 +1,13 @@
 package org.example.spartaboard.service;
 
-
+import jakarta.servlet.http.HttpServletResponse;
 import org.example.spartaboard.dto.LoginRequestDto;
 import org.example.spartaboard.dto.SignupRequestDto;
 import org.example.spartaboard.entity.User;
-import org.example.spartaboard.entity.UserRoleEnum;
 import org.example.spartaboard.entity.UserStatus;
 import org.example.spartaboard.jwt.JwtUtil;
 import org.example.spartaboard.repository.UserRepository;
-import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,13 +39,13 @@ public class UserService {
         }
         String password = passwordEncoder.encode(requestDto.getPassword());
 
-
         //회원 사용자 ID 조건 확인
         if (!(userid.length() >= 10 && userid.length() <= 20)) {
             throw new IllegalArgumentException("사용자 ID는 최소 10글자 이상, 최대 20글자 이하여야 합니다.");
         }
+
         // 회원 중복 확인
-        Optional<User> checkUserid = userRepository.findByUserid(userid);
+        Optional<User> checkUserid = userRepository.findByUserId(userid);
         if (checkUserid.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
@@ -59,12 +58,12 @@ public class UserService {
         }
 
         // 사용자 ROLE 확인
-        UserRoleEnum role = UserRoleEnum.USER;
+        UserStatus role = UserStatus.USER;
         if (requestDto.isAdmin()) {
             if (!ADMIN_TOKEN.equals(requestDto.getAdminToken())) {
                 throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
             }
-            role = UserRoleEnum.ADMIN;
+            role = UserStatus.ADMIN;
         }
 
         UserStatus userStatus = UserStatus.ACTIVE;
@@ -75,11 +74,11 @@ public class UserService {
     }
 
     public void login(LoginRequestDto requestDto, HttpServletResponse res) {
-        String username = requestDto.getUsername();
+        String username = requestDto.getUserId();
         String password = requestDto.getPassword();
 
         // 사용자 확인
-        User user = userRepository.findByUserid(username).orElseThrow(
+        User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
         );
 
@@ -91,5 +90,10 @@ public class UserService {
         // JWT 생성 및 쿠키에 저장 후 Response 객체에 추가
         String token = jwtUtil.createToken(user.getUsername(), user.getRole());
         jwtUtil.addJwtToCookie(token, res);
+    }
+
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
     }
 }

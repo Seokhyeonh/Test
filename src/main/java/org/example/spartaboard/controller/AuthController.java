@@ -1,11 +1,11 @@
-package org.example.spartaboard.auth;
+package org.example.spartaboard.controller;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.example.spartaboard.entity.UserRoleEnum;
+import org.example.spartaboard.entity.UserStatus;
 import org.example.spartaboard.jwt.JwtUtil;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,7 +67,7 @@ public class AuthController {
     @GetMapping("/create-jwt")
     public String createJwt(HttpServletResponse res) {
         // Jwt 생성
-        String token = jwtUtil.createToken("Robbie", UserRoleEnum.USER);
+        String token = jwtUtil.createToken("Robbie", UserStatus.USER);
 
         // Jwt 쿠키 저장
         jwtUtil.addJwtToCookie(token, res);
