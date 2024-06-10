@@ -1,6 +1,7 @@
 package org.example.spartaboard.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.example.spartaboard.dto.LoginRequestDto;
@@ -9,6 +10,8 @@ import org.example.spartaboard.entity.User;
 import org.example.spartaboard.entity.UserStatus;
 import org.example.spartaboard.jwt.JwtUtil;
 import org.example.spartaboard.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -75,6 +78,8 @@ public class UserService {
             role = UserStatus.ADMIN;
         }
 
+        UserStatus userStatus = UserStatus.ACTIVE;
+
         // 사용자 등록
         User user = new User(userid, username, password, email, intro, role, userStatus);
         userRepository.save(user);
@@ -91,7 +96,7 @@ public class UserService {
     }
 
     public void login(LoginRequestDto requestDto, HttpServletResponse res) {
-        String username = requestDto.getUserid();
+        String username = requestDto.getUserId();
         String password = requestDto.getPassword();
 
         // 사용자 확인

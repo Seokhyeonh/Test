@@ -1,5 +1,8 @@
 package org.example.spartaboard.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.spartaboard.Security.UserDetailsImpl;
@@ -10,6 +13,7 @@ import org.example.spartaboard.jwt.JwtUtil;
 import org.example.spartaboard.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
