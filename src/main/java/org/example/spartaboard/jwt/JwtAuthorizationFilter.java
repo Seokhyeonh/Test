@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.example.spartaboard.Security.UserDetailsServiceImpl;
+import org.example.spartaboard.entity.UserStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,7 +39,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 setAuthentication(accessToken, request);
             } else if (StringUtils.hasText(refreshToken) && jwtUtil.validateToken(refreshToken)) {
                 Claims claims = jwtUtil.getUserInfoFromToken(refreshToken);
-                String newAccessToken = jwtUtil.createAccessToken(claims.getSubject(), 프로필.entity.UserStatus.valueOf(claims.get(JwtUtil.AUTHORIZATION_KEY).toString()));
+                String newAccessToken = jwtUtil.createAccessToken(claims.getSubject(), UserStatus.valueOf(claims.get(JwtUtil.AUTHORIZATION_KEY).toString()));
                 response.addHeader(JwtUtil.AUTHORIZATION_HEADER, newAccessToken);
                 setAuthentication(newAccessToken, request);
             }

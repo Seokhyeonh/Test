@@ -15,8 +15,9 @@ public class UserController {
     private final JwtUtil jwtUtil;
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
+        this.jwtUtil = jwtUtil;
     }
 
 

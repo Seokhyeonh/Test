@@ -39,11 +39,11 @@ public class UserService {
         }
         String password = passwordEncoder.encode(requestDto.getPassword());
 
-
         //회원 사용자 ID 조건 확인
         if (!(userid.length() >= 10 && userid.length() <= 20)) {
             throw new IllegalArgumentException("사용자 ID는 최소 10글자 이상, 최대 20글자 이하여야 합니다.");
         }
+
         // 회원 중복 확인
         Optional<User> checkUserid = userRepository.findByUserId(userid);
         if (checkUserid.isPresent()) {
