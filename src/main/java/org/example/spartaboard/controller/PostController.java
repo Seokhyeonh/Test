@@ -28,10 +28,12 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/createPost")
-    public CreatePostResponseDto createPost(CreatePostRequestDto createPostRequestDto) {
-
-        return postService.createPost(createPostRequestDto);
-
+    public ResponseEntity<CreatePostResponseDto> createPost(
+            @RequestBody CreatePostRequestDto createPostRequestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        CreatePostResponseDto response = postService.createPost(createPostRequestDto, user);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/test")
@@ -46,26 +48,24 @@ public class PostController {
     }
 
     //게시글 수정
-    @PutMapping("{postId}")
+    @PutMapping("/{postId}")
     public ResponseEntity<PostResponseDto> updatePost(
             @PathVariable Long postId,
-            @RequestBody PostUpdateRequestDto requestDto
-
-            ) {
-        User user = new User();
+            @RequestBody PostUpdateRequestDto requestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
         Post post = postService.updatePost(postId, requestDto, user);
-        PostResponseDto PostResponseDto = new PostResponseDto(post);
-
-        return new ResponseEntity<>(PostResponseDto, HttpStatus.OK);
+        PostResponseDto postResponseDto = new PostResponseDto(post);
+        return ResponseEntity.ok(postResponseDto);
     }
 
     //게시글 삭제
     @DeleteMapping("/{postId}")
     public ResponseEntity<String> deletePost(
             @PathVariable Long postId,
-            @AuthenticationPrincipal UserDetailsImpl userDetails
-    ) {
-        postService.deletePost(postId, userDetails.getUser());
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        postService.deletePost(postId, user);
         return ResponseEntity.ok("게시글 삭제 완료");
     }
 }

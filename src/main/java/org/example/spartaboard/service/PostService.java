@@ -3,7 +3,6 @@ package org.example.spartaboard.service;
 import jakarta.transaction.Transactional;
 import org.example.spartaboard.dto.CreatePostRequestDto;
 import org.example.spartaboard.dto.CreatePostResponseDto;
-import org.example.spartaboard.dto.PostResponseDto;
 import org.example.spartaboard.dto.PostUpdateRequestDto;
 import org.example.spartaboard.entity.Post;
 import org.example.spartaboard.entity.User;
@@ -21,7 +20,7 @@ public class PostService {
 
     //게시글 생성
     @Transactional
-    public CreatePostResponseDto createPost(CreatePostRequestDto createPostRequestDto) {
+    public CreatePostResponseDto createPost(CreatePostRequestDto createPostRequestDto, User user) {
         String content = createPostRequestDto.getContent();
         User userid = createPostRequestDto.getUserid();
         String title = createPostRequestDto.getTitle();
