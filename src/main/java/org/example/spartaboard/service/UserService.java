@@ -51,7 +51,7 @@ public class UserService {
         }
 
         // 회원 중복 확인
-        Optional<User> checkUserid = userRepository.findByUserId(userid);
+        Optional<User> checkUserid = userRepository.findByUserid(userid);
         if (checkUserid.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
@@ -96,7 +96,7 @@ public class UserService {
     }
 
     public void login(LoginRequestDto requestDto, HttpServletResponse res) {
-        String username = requestDto.getUserId();
+        String username = requestDto.getUserid();
         String password = requestDto.getPassword();
 
         // 사용자 확인

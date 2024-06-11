@@ -12,6 +12,6 @@ import org.example.spartaboard.entity.User;
 public class CreatePostRequestDto {
     @NotBlank
     private String content;
-    private User userid;
+    private String userid;
     private String title;
 }

@@ -1,6 +1,7 @@
 package org.example.spartaboard.service;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.example.spartaboard.dto.CreatePostRequestDto;
 import org.example.spartaboard.dto.CreatePostResponseDto;
 import org.example.spartaboard.dto.PostUpdateRequestDto;
@@ -8,23 +9,31 @@ import org.example.spartaboard.entity.Post;
 import org.example.spartaboard.entity.User;
 import org.example.spartaboard.exception.DataNotFoundException;
 import org.example.spartaboard.repository.PostRepository;
+import org.example.spartaboard.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-
+@RequiredArgsConstructor
 @Service
 public class PostService {
 
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     //게시글 생성
     @Transactional
-    public CreatePostResponseDto createPost(CreatePostRequestDto createPostRequestDto, User user) {
+    public CreatePostResponseDto createPost(CreatePostRequestDto createPostRequestDto) {
         String content = createPostRequestDto.getContent();
-        User userid = createPostRequestDto.getUserid();
+        String userid = createPostRequestDto.getUserid();
         String title = createPostRequestDto.getTitle();
-        Post post = new Post(title, content, userid); //
+        User user = userRepository.findByUserid(userid)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"잘못된 접근입니다.")
+                );
+
+        Post post = new Post(title, content, user); //
         postRepository.save(post);
         return new CreatePostResponseDto(post);
     }

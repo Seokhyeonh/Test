@@ -28,11 +28,12 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/createPost")
+
     public ResponseEntity<CreatePostResponseDto> createPost(
             @RequestBody CreatePostRequestDto createPostRequestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        User user = userDetails.getUser();
-        CreatePostResponseDto response = postService.createPost(createPostRequestDto, user);
+//        User user = userDetails.getUser();
+        CreatePostResponseDto response = postService.createPost(createPostRequestDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
