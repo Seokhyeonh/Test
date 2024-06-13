@@ -1,5 +1,7 @@
 package org.example.spartaboard;
 
+import jakarta.servlet.http.HttpServletResponse;
+import org.example.spartaboard.dto.LoginRequestDto;
 import org.example.spartaboard.dto.SignupRequestDto;
 import org.example.spartaboard.entity.User;
 import org.example.spartaboard.entity.UserStatus;
@@ -131,6 +133,28 @@ class UserServiceTest {
 
         // then
         assertEquals("비밀번호는 최소 10글자 이상이어야 합니다.", exception.getMessage());
+    }
+    @Test
+    @DisplayName("회원가입 실패 - 탈퇴 상태")
+    void test5() {
+        // given
+        SignupRequestDto requestDto = new SignupRequestDto();
+        requestDto.setUserid("testuserid11");
+        requestDto.setUsername("testusername2");
+        requestDto.setPassword("testpassword123!!");
+        requestDto.setEmail("test@example.com");
+
+        given(userRepository.findByUserid("testuserid11")).willReturn(Optional.empty());
+        given(userRepository.findByEmail("test@example.com")).willReturn(Optional.empty());
+        given(userRepository.findByStatus(UserStatus.INACTIVE)).willReturn(Optional.of(new User()));
+
+        // when
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            userService.signup(requestDto);
+        });
+
+        // then
+        assertEquals("탈퇴 상태인 사용자가 존재합니다.", exception.getMessage());
     }
 
 }
