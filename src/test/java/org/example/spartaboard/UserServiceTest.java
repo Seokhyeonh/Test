@@ -158,7 +158,7 @@ class UserServiceTest {
     }
     @Test
     @DisplayName("로그인성공")
-    void testLogin() {
+    void test6() {
         // Given
         LoginRequestDto requestDto = new LoginRequestDto();
         requestDto.setUserid("testuserid");
@@ -180,7 +180,49 @@ class UserServiceTest {
         userService.login(requestDto, res);
 
         // Then
-        verify(jwtUtil, times(1)).addJwtToCookie("jwt-token", res);F
+        verify(jwtUtil, times(1)).addJwtToCookie("jwt-token", res);
+    }
+    @Test
+    @DisplayName("로그인 실패 - 사용자 존재하지 않음")
+    void test7() {
+        // given
+        LoginRequestDto requestDto = new LoginRequestDto();
+        requestDto.setUserid("testuserid1");
+        requestDto.setPassword("testpassword1234!");
+
+        given(userRepository.findByUsername("testuserid1")).willReturn(Optional.empty());
+
+        // when
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            userService.login(requestDto, mock(HttpServletResponse.class));
+        });
+
+        // then
+        assertEquals("등록된 사용자가 없습니다.", exception.getMessage());
+    }
+    @Test
+    @DisplayName("로그인 실패 - 비밀번호 불일치")
+    void test8() {
+        // given
+        LoginRequestDto requestDto = new LoginRequestDto();
+        requestDto.setUserid("testuserid");
+        requestDto.setPassword("testpassword1234!");
+
+        User user = new User();
+        user.setUserid("testuserid");
+        user.setUsername("testpassword123");
+        user.setPassword("encodedpassword");
+
+        given(userRepository.findByUsername("testuserid")).willReturn(Optional.of(user));
+        given(passwordEncoder.matches("testpassword1234!", "encodedpassword")).willReturn(false);
+
+        // when
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            userService.login(requestDto, mock(HttpServletResponse.class));
+        });
+
+        // then
+        assertEquals("비밀번호가 일치하지 않습니다.", exception.getMessage());
     }
 }
 
