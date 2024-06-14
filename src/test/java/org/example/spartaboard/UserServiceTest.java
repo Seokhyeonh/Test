@@ -145,7 +145,7 @@ class UserServiceTest {
         requestDto.setEmail("test@example.com");
 
         given(userRepository.findByUserid("testuserid11")).willReturn(Optional.empty());
-        given(userRepository.findByEmail("test@example.com")).willReturn(Optional.empty());
+
         given(userRepository.findByStatus(UserStatus.INACTIVE)).willReturn(Optional.of(new User()));
 
         // when
@@ -156,6 +156,31 @@ class UserServiceTest {
         // then
         assertEquals("탈퇴 상태인 사용자가 존재합니다.", exception.getMessage());
     }
+    @Test
+    @DisplayName("로그인성공")
+    void testLogin() {
+        // Given
+        LoginRequestDto requestDto = new LoginRequestDto();
+        requestDto.setUserid("testuserid");
+        requestDto.setPassword("testpassword123!");
 
+        User user = new User();
+        user.setUsername("testuserid");
+        user.setPassword("encodedpassword");
+        user.setRole(UserStatus.ACTIVE);
+
+        HttpServletResponse res = mock(HttpServletResponse.class);
+
+        when(userRepository.findByUsername(requestDto.getUserid())).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(requestDto.getPassword(), user.getPassword())).thenReturn(true);
+
+        when(jwtUtil.createToken(user.getUsername(), user.getRole())).thenReturn("jwt-token");
+
+        // When
+        userService.login(requestDto, res);
+
+        // Then
+        verify(jwtUtil, times(1)).addJwtToCookie("jwt-token", res);F
+    }
 }
 
