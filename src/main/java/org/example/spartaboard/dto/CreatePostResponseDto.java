@@ -13,13 +13,14 @@ import java.time.LocalDateTime;
 @Setter
 public class CreatePostResponseDto {
     private long id;
+    private String title;
     private User userid;
     private String content;
-    private LocalDateTime create_at;
-    private LocalDateTime update_at;
+
 
 
     public CreatePostResponseDto(Post post) {
+        this.title = post.getTitle();
         this.id = post.getPostId();
         this.userid = post.getUser();
         this.content = post.getContents();

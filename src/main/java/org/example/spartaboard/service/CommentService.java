@@ -1,6 +1,7 @@
 package org.example.spartaboard.service;
 
 import jakarta.transaction.Transactional;
+import lombok.Setter;
 import org.example.spartaboard.dto.CommentRequestDto;
 import org.example.spartaboard.dto.CommentResponseDto;
 import org.example.spartaboard.entity.Comment;
@@ -10,6 +11,7 @@ import org.example.spartaboard.exception.DataNotFoundException;
 import org.example.spartaboard.repository.CommentRepository;
 import org.example.spartaboard.repository.PostRepository;
 import org.springframework.stereotype.Service;
+@Setter
 
 @Service
 public class CommentService {

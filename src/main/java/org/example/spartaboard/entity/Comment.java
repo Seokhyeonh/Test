@@ -4,8 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.example.spartaboard.dto.CommentRequestDto;
-
+@Setter
 @Entity
 @NoArgsConstructor
 @Getter

@@ -22,6 +22,12 @@ repositories {
 }
 
 dependencies {
+	// build.gradle
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	test {
+		useJUnitPlatform()
+	}
 
 	// JWT
 	compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
